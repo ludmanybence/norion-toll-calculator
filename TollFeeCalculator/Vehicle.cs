@@ -1,5 +1,17 @@
 ﻿namespace TollFeeCalculator;
-public interface Vehicle
+
+public enum VehicleType
 {
-    String GetVehicleType();
+    Car,
+    Motorbike,
+    Tractor,
+    Emergency,
+    Diplomat,
+    Foreign,
+    Military
+}
+
+public class Vehicle(VehicleType type)
+{
+    public VehicleType Type { get { return type; } }
 }

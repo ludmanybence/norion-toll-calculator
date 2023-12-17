@@ -71,7 +71,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Car_Weekdays()
     {
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Car);
 
         foreach (var item in TestTables.RegularRates())
         {
@@ -82,7 +82,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Car_Weekends()
     {
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Car);
 
         foreach (var time in TestTables.Weekends())
         {
@@ -93,7 +93,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Car_DayBeforeHolidays()
     {
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Car);
 
         foreach (var time in TestTables.Holidays())
         {
@@ -104,7 +104,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Car_Holidays()
     {
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
         foreach (var time in TestTables.Holidays())
         {
             Assert.Equal(0, tollCalculator.GetTollFeeForTime(time, vehicle));
@@ -114,7 +114,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Motorbike_Weekdays()
     {
-        Vehicle vehicle = new Motorbike();
+        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
 
         foreach (var item in TestTables.RegularRates())
         {
@@ -125,7 +125,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Motorbike_Weekends()
     {
-        Vehicle vehicle = new Motorbike();
+        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
 
         foreach (var time in TestTables.Weekends())
         {
@@ -136,7 +136,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Motorbike_Holidays()
     {
-        Vehicle vehicle = new Motorbike();
+        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
 
         foreach (var time in TestTables.Holidays())
         {
@@ -147,7 +147,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Motorbike_DayBeforeHolidays()
     {
-        Vehicle vehicle = new Motorbike();
+        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
 
         foreach (var time in TestTables.Holidays())
         {
@@ -159,7 +159,7 @@ public class TollCalculator_Tests
     public void GetTotalTollFeeForDates_Car_ShouldNotExceedDailyCap()
     {
         var dailyCap = 60;
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Car);
 
         var passageTimes = TestTables.RegularRates().Select(x => x.Time).ToArray();
         var total = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
@@ -170,7 +170,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldNotChargeMoreThanOncePerHour()
     {
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Car);
 
         DateTime[] passageTimes = [
             new(2023,12,15,8,29,0),
@@ -186,7 +186,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldChargeAgainIfMoreThanOneHourPassed()
     {
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Car);
     
         DateTime[] passageTimes = [
             new(2023,12,15,8,29,0),
@@ -200,7 +200,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldNotBeCharged_Holidays()
     {
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Car);
 
         var total = tollCalculator.GetTotalTollFeeForDates(vehicle, TestTables.Holidays());
 
@@ -210,7 +210,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldNotBeCharged_Weekends()
     {
-        Vehicle vehicle = new Car();
+        Vehicle vehicle = new Vehicle(VehicleType.Car);
 
         var total = tollCalculator.GetTotalTollFeeForDates(vehicle, TestTables.Weekends());
 
@@ -220,7 +220,7 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTotalTollFeeForDates_Motorbike_ShouldNotBeCharged()
     {
-        Vehicle vehicle = new Motorbike();
+        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
 
         var passageTimes = TestTables.RegularRates().Select(x => x.Time).ToArray();
         var total = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
