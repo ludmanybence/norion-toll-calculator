@@ -69,7 +69,7 @@ public class TollCalculator
                vehicleType.Equals(TollFreeVehicles.Military.ToString());
     }
 
-    private Boolean IsTollFreeDate(DateTime date)
+    private bool IsTollFreeDate(DateTime date)
     {
         int year = date.Year;
         int month = date.Month;
