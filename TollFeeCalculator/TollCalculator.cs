@@ -11,14 +11,14 @@ public class TollCalculator
      * @return - the total toll fee for that day
      */
 
-    public int GetTollFee(Vehicle vehicle, DateTime[] dates)
+    public int GetTotalTollFeeForDates(Vehicle vehicle, DateTime[] dates)
     {
         DateTime intervalStart = dates[0];
         int totalFee = 0;
         foreach (DateTime date in dates)
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
+            int nextFee = GetTollFeeForTime(date, vehicle);
+            int tempFee = GetTollFeeForTime(intervalStart, vehicle);
 
             long diffInMillies = date.Millisecond - intervalStart.Millisecond;
             long minutes = diffInMillies/1000/60;
@@ -38,19 +38,7 @@ public class TollCalculator
         return totalFee;
     }
 
-    private bool IsTollFreeVehicle(Vehicle vehicle)
-    {
-        if (vehicle == null) return false;
-        String vehicleType = vehicle.GetVehicleType();
-        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Military.ToString());
-    }
-
-    public int GetTollFee(DateTime date, Vehicle vehicle)
+    public int GetTollFeeForTime(DateTime date, Vehicle vehicle)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
@@ -67,6 +55,18 @@ public class TollCalculator
         else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
         else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
         else return 0;
+    }
+
+    private bool IsTollFreeVehicle(Vehicle vehicle)
+    {
+        if (vehicle == null) return false;
+        String vehicleType = vehicle.GetVehicleType();
+        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
+               vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
+               vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
+               vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
+               vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
+               vehicleType.Equals(TollFreeVehicles.Military.ToString());
     }
 
     private Boolean IsTollFreeDate(DateTime date)
