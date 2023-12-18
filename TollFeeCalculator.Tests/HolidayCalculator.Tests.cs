@@ -42,6 +42,16 @@ file class TestDates
         new("Midsummer Day", new(2025,6,21)),
         new("Midsummer Day", new(2026,6,20)),
     ];
+
+    public static readonly TestDate[] AllSaintsDays = [
+        new("All Saints Day", new(2023,11,4)),
+        new("All Saints Day", new(2013,11,2)),
+    ];
+
+    public static readonly TestDate[] FakeAllSaintsDays = [
+        new("Regular 1st Nov", new(2023,11,1)),
+        new("Regular 1st Nov", new(2013,11,1)),
+    ];
 }
 
 public class HolidayCalculator_Tests
@@ -58,7 +68,8 @@ public class HolidayCalculator_Tests
     [Fact]
     public void IsFixedDateHoliday_ShouldReturn_False_NonHolidays()
     {
-        foreach (var day in TestDates.NonHolidays)
+        TestDate[] dates = [..TestDates.NonHolidays, ..TestDates.FakeAllSaintsDays];
+        foreach (var day in dates)
         {
             Assert.False(HolidayCalculator.IsFixedDateHoliday(day.Date), $"Expected {day.Date} not to be a holiday: {day.Name}");
         }
@@ -67,7 +78,7 @@ public class HolidayCalculator_Tests
     [Fact]
     public void IsFixedDateHoliday_ShouldReturn_False_Non_FixedDateHolidays()
     {
-        TestDate[] dates = [.. TestDates.EasterSundays, .. TestDates.MidsommarDays, .. TestDates.EasterRelatedHolidays];
+        TestDate[] dates = [.. TestDates.EasterSundays, .. TestDates.MidsommarDays, .. TestDates.EasterRelatedHolidays, ..TestDates.AllSaintsDays];
 
         foreach (var day in dates)
         {
@@ -143,9 +154,27 @@ public class HolidayCalculator_Tests
     }
 
     [Fact]
+    public void IsAllSaintsDay_ShouldReturn_True_AllSaints()
+    {
+        foreach (var day in TestDates.AllSaintsDays)
+        {
+            Assert.True(HolidayCalculator.IsAllSaintsDay(day.Date), $"Expected {day.Date} to be: {day.Name}");
+        }
+    }
+
+    [Fact]
+    public void IsAllSaintsDay_ShouldReturn_False_MistakenAllSaints()
+    {
+        foreach (var day in TestDates.FakeAllSaintsDays)
+        {
+            Assert.False(HolidayCalculator.IsAllSaintsDay(day.Date), $"Expected {day.Date} to be: {day.Name}");
+        }
+    }
+
+    [Fact]
     public void IsHoliday_ShouldReturn_True_For_Holidays()
     {
-        TestDate[] dates = [.. TestDates.MidsommarDays, .. TestDates.FixedHolidays, .. TestDates.EasterSundays, .. TestDates.EasterRelatedHolidays];
+        TestDate[] dates = [.. TestDates.MidsommarDays, .. TestDates.FixedHolidays, .. TestDates.EasterSundays, .. TestDates.EasterRelatedHolidays, ..TestDates.AllSaintsDays];
 
         foreach (var day in dates)
         {
@@ -156,7 +185,8 @@ public class HolidayCalculator_Tests
     [Fact]
     public void IsHoliday_ShouldReturn_False_For_NonHolidays()
     {
-        foreach (var day in TestDates.NonHolidays)
+        TestDate[] dates = [.. TestDates.NonHolidays, ..TestDates.FakeAllSaintsDays];
+        foreach (var day in dates)
         {
             Assert.False(HolidayCalculator.IsHoliday(day.Date), $"Expected {day.Date} not to be a holiday: {day.Name}");
         }
