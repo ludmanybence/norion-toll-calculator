@@ -84,6 +84,6 @@ public class TollCalculator
 
     private bool IsTollFreeDate(DateTime date)
     {
-        return date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday || HolidayCalculator.IsHoliday(date) || HolidayCalculator.IsHoliday(date.AddDays(1));
+        return date.Month == 7 || date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday || HolidayCalculator.IsHoliday(date) || HolidayCalculator.IsHoliday(date.AddDays(1));
     }
 }
