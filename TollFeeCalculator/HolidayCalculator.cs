@@ -1,6 +1,6 @@
-using System.Security.Cryptography;
-
 namespace TollFeeCalculator;
+
+file record Holiday(string Name, DateTime Date);
 
 public class HolidayCalculator
 {
@@ -22,12 +22,16 @@ public class HolidayCalculator
     public bool IsEasterRelatedHoliday(DateTime date)
     {
         var easter = CalculateEaster(date.Year);
-        var easterMonday = easter.AddDays(1);
-        var goodFriday = easter.AddDays(-2);
-        var ascensionDay = easter.AddDays(39);
-        var pentecost = easter.AddDays(49);
 
-        return date == easter || date == easterMonday || date == goodFriday || date == ascensionDay || date == pentecost;
+        Holiday[] easterHolidays = [
+            new("Easter Sunday", easter),
+            new("Easter Monday", easter.AddDays(1)),
+            new("Good Friday", easter.AddDays(-2)),
+            new("Ascension Day", easter.AddDays(39)),
+            new("Pentecost Sunday", easter.AddDays(49)),
+        ];
+
+        return easterHolidays.Any(x => date == x.Date);
     }
 
     private DateTime CalculateEaster(int year)
