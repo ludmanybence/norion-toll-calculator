@@ -71,87 +71,111 @@ public class TollCalculator_Tests
     [Fact]
     public void GetTollFeeForTime_Car_Weekdays()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Car);
+        Vehicle vehicle = new(VehicleType.Car);
 
         foreach (var item in TestTables.RegularRates())
         {
-            Assert.Equal(item.ExpectedPrice, tollCalculator.GetTollFeeForTime(item.Time, vehicle));
+            var expected = item.ExpectedPrice;
+            var result = tollCalculator.GetTollFeeForTime(item.Time, vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {item.Time} expected price {expected}, got {result}");
         }
     }
 
     [Fact]
     public void GetTollFeeForTime_Car_Weekends()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Car);
+        Vehicle vehicle = new(VehicleType.Car);
 
         foreach (var time in TestTables.Weekends())
         {
-            Assert.Equal(0, tollCalculator.GetTollFeeForTime(time, vehicle));
+            var expected = 0;
+            var result = tollCalculator.GetTollFeeForTime(time, vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
         }
     }
 
     [Fact]
     public void GetTollFeeForTime_Car_DayBeforeHolidays()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Car);
+        Vehicle vehicle = new(VehicleType.Car);
 
         foreach (var time in TestTables.Holidays())
         {
-            Assert.Equal(0, tollCalculator.GetTollFeeForTime(time.AddDays(-1), vehicle));
+            var expected = 0;
+            var result = tollCalculator.GetTollFeeForTime(time.AddDays(-1), vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
         }
     }
 
     [Fact]
     public void GetTollFeeForTime_Car_Holidays()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
+        Vehicle vehicle = new(VehicleType.Motorbike);
         foreach (var time in TestTables.Holidays())
         {
-            Assert.Equal(0, tollCalculator.GetTollFeeForTime(time, vehicle));
+            var expected = 0;
+            var result = tollCalculator.GetTollFeeForTime(time, vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
         }
     }
 
     [Fact]
     public void GetTollFeeForTime_Motorbike_Weekdays()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
+        Vehicle vehicle = new(VehicleType.Motorbike);
 
         foreach (var item in TestTables.RegularRates())
         {
-            Assert.Equal(0, tollCalculator.GetTollFeeForTime(item.Time, vehicle));
+            var expected = item.ExpectedPrice;
+            var result = tollCalculator.GetTollFeeForTime(item.Time, vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {item.Time} expected price {expected}, got {result}");
         }
     }
 
     [Fact]
     public void GetTollFeeForTime_Motorbike_Weekends()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
+        Vehicle vehicle = new(VehicleType.Motorbike);
 
         foreach (var time in TestTables.Weekends())
         {
-            Assert.Equal(0, tollCalculator.GetTollFeeForTime(time, vehicle));
+            var expected = 0;
+            var result = tollCalculator.GetTollFeeForTime(time, vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
         }
     }
 
     [Fact]
     public void GetTollFeeForTime_Motorbike_Holidays()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
+        Vehicle vehicle = new(VehicleType.Motorbike);
 
         foreach (var time in TestTables.Holidays())
         {
-            Assert.Equal(0, tollCalculator.GetTollFeeForTime(time, vehicle));
+            var expected = 0;
+            var result = tollCalculator.GetTollFeeForTime(time, vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
         }
     }
 
     [Fact]
     public void GetTollFeeForTime_Motorbike_DayBeforeHolidays()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
+        Vehicle vehicle = new(VehicleType.Motorbike);
 
         foreach (var time in TestTables.Holidays())
         {
-            Assert.Equal(0, tollCalculator.GetTollFeeForTime(time.AddDays(-1), vehicle));
+            var expected = 0;
+            var result = tollCalculator.GetTollFeeForTime(time.AddDays(-1), vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
         }
     }
 
@@ -159,18 +183,18 @@ public class TollCalculator_Tests
     public void GetTotalTollFeeForDates_Car_ShouldNotExceedDailyCap()
     {
         var dailyCap = 60;
-        Vehicle vehicle = new Vehicle(VehicleType.Car);
+        Vehicle vehicle = new(VehicleType.Car);
 
         var passageTimes = TestTables.RegularRates().Select(x => x.Time).ToArray();
         var total = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
 
-        Assert.True(total <= dailyCap);
+        Assert.True(total <= dailyCap, $"Expected total to not exceed {dailyCap}");
     }
 
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldNotChargeMoreThanOncePerHour()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Car);
+        Vehicle vehicle = new(VehicleType.Car);
 
         DateTime[] passageTimes = [
             new(2023,12,15,8,29,0),
@@ -178,53 +202,61 @@ public class TollCalculator_Tests
             new(2023,12,15,8,59,0),
             new(2023,12,15,9,28,0),
         ];
-        var total = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
 
-        Assert.Equal(13, total);
+        var expected = 13;
+        var result = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
+        var equal = expected == result;
+        Assert.True(equal, $"Expected total to equal {expected}, the price for the first passing within an hour.");
     }
 
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldChargeAgainIfMoreThanOneHourPassed()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Car);
-    
+        Vehicle vehicle = new(VehicleType.Car);
+
         DateTime[] passageTimes = [
             new(2023,12,15,8,29,0),
             new(2023,12,15,9,39,0),
         ];
-        var total = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
 
-        Assert.Equal(21, total);
+        var expected = 21;
+        var result = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
+        var equal = expected == result;
+        Assert.True(equal, $"Expected result to equal {expected}, the sum of prices for passage at {string.Join(" and ", passageTimes)}.");
     }
 
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldNotBeCharged_Holidays()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Car);
+        Vehicle vehicle = new(VehicleType.Car);
 
-        var total = tollCalculator.GetTotalTollFeeForDates(vehicle, TestTables.Holidays());
-
-        Assert.Equal(0, total);
+        var expected = 0;
+        var result = tollCalculator.GetTotalTollFeeForDates(vehicle, TestTables.Holidays());
+        var equal = expected == result;
+        Assert.True(equal, $"Expected result to equal {expected}, got {result}");
     }
 
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldNotBeCharged_Weekends()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Car);
+        Vehicle vehicle = new(VehicleType.Car);
 
-        var total = tollCalculator.GetTotalTollFeeForDates(vehicle, TestTables.Weekends());
-
-        Assert.Equal(0, total);
+        var expected = 0;
+        var result = tollCalculator.GetTotalTollFeeForDates(vehicle, TestTables.Weekends());
+        var equal = expected == result;
+        Assert.True(equal, $"Expected result to equal {expected}, got {result}");
     }
 
     [Fact]
     public void GetTotalTollFeeForDates_Motorbike_ShouldNotBeCharged()
     {
-        Vehicle vehicle = new Vehicle(VehicleType.Motorbike);
+        Vehicle vehicle = new(VehicleType.Motorbike);
 
         var passageTimes = TestTables.RegularRates().Select(x => x.Time).ToArray();
-        var total = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
 
-        Assert.Equal(0, total);
+        var expected = 0;
+        var result = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
+        var equal = expected == result;
+        Assert.True(equal, $"Expected result to equal {expected}, got {result}");
     }
 }
