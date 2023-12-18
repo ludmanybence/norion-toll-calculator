@@ -16,7 +16,22 @@ public class HolidayCalculator
 
     public bool IsFixedDateHoliday(DateTime date)
     {
-        return false;
+        date = new(date.Year, date.Month, date.Day);
+
+        var christmas = new DateTime(date.Year, 12, 25);
+
+        Holiday[] fixedDayHolidays = [
+            new("Christmas Eve", christmas.AddDays(-1)),
+            new("Christmas Day", christmas),
+            new("2nd Day Christmas", christmas.AddDays(1)),
+            new("New Years Eve", new(date.Year, 12,31)),
+            new("New Years Day", new(date.Year, 1,1)),
+            new("Epiphany", christmas.AddDays(12).AddYears(-1)),
+            new("Labour Day", new(date.Year, 5,1)),
+            new("Swedish National Day", new(date.Year, 6,6)),
+        ];
+
+        return fixedDayHolidays.Any(x => date == x.Date);
     }
 
     public bool IsEasterRelatedHoliday(DateTime date)
