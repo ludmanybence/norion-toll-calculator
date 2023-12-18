@@ -11,7 +11,7 @@ public class HolidayCalculator
 
     public bool IsSwedishMidsummer(DateTime date)
     {
-        return false;
+        return date.Month == 6 && date.Day >= 19 && date.Day <= 26 && date.DayOfWeek == DayOfWeek.Saturday;
     }
 
     public bool IsFixedDateHoliday(DateTime date)
