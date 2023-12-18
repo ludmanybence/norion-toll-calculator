@@ -62,6 +62,15 @@ file class TestTables
         new(2023,12,16, 6,29,59),
         new(2023,12,17, 6,30,00),
     ];
+
+    public static DateTime[] JulyDays() => [
+        new(2023,7,07, 15,00,00),
+        new(2023,7,08, 17,25,05),
+        new(2023,7,25, 18,25,05),
+        new(2023,7,26, 18,25,05),
+        new(2023,7,16, 6,29,59),
+        new(2023,7,17, 6,30,00),
+    ];
 }
 
 public class TollCalculator_Tests
@@ -107,6 +116,20 @@ public class TollCalculator_Tests
             var result = tollCalculator.GetTollFeeForTime(time.AddDays(-1), vehicle);
             var equal = expected == result;
             Assert.True(equal, $"For time {time.AddDays(-1)} expected price {expected}, got {result}");
+        }
+    }
+
+    [Fact]
+    public void GetTollFeeForTime_Car_DuringJuly()
+    {
+        Vehicle vehicle = new(VehicleType.Car);
+
+        foreach (var time in TestTables.JulyDays())
+        {
+            var expected = 0;
+            var result = tollCalculator.GetTollFeeForTime(time, vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
         }
     }
 
@@ -177,6 +200,20 @@ public class TollCalculator_Tests
             var equal = expected == result;
             Assert.True(equal, $"For time {time.AddDays(-1)} expected price {expected}, got {result}");
         }
+    }  
+    
+    [Fact]
+    public void GetTollFeeForTime_Motorbike_DuringJuly()
+    {
+        Vehicle vehicle = new(VehicleType.Motorbike);
+
+        foreach (var time in TestTables.JulyDays())
+        {
+            var expected = 0;
+            var result = tollCalculator.GetTollFeeForTime(time, vehicle);
+            var equal = expected == result;
+            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
+        }
     }
 
     [Fact]
@@ -224,7 +261,7 @@ public class TollCalculator_Tests
         var equal = expected == result;
         Assert.True(equal, $"Expected result to equal {expected}, the sum of prices for passage at {string.Join(" and ", passageTimes)}.");
     }
-    
+
     [Fact]
     public void GetTotalTollFeeForDates_Car_ShouldBeChargedIf_PreviousPassingWasWithinAnHour_But_WasNotCharged()
     {
