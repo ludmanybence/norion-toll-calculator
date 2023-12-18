@@ -75,7 +75,7 @@ file class TestTables
 
 public class TollCalculator_Tests
 {
-    private readonly TollCalculator tollCalculator = new(vehicleEvaluator: new VehicleEvaluator(), dateEvaluator: new DateEvaluator(), priceTable: TimeTable.PriceTable);
+    private readonly TollCalculator tollCalculator = TollCalculator.Default();
 
     [Fact]
     public void GetTollFeeForTime_Car_Weekdays()

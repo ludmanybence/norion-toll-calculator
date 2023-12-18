@@ -2,6 +2,11 @@
 
 public class TollCalculator(IVehicleEvaluator vehicleEvaluator, IDateEvaluator dateEvaluator, PriceForInterval[] priceTable)
 {
+
+    public static TollCalculator Default(){
+        return new TollCalculator(new VehicleEvaluator(), new DateEvaluator(), TimeTable.PriceTable);
+    }
+
     private readonly int dailyCap = 60;
 
     /**
