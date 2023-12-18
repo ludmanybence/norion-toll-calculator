@@ -8,12 +8,20 @@ public static class HolidayCalculator
     {
         //Normalisera icke-datum värden
         date = new(date.Year, date.Month, date.Day);
-        return IsFixedDateHoliday(date) || IsSwedishMidsummer(date) || IsEasterRelatedHoliday(date);
+
+        return IsFixedDateHoliday(date) || IsSwedishMidsummer(date) || IsEasterRelatedHoliday(date) || IsAllSaintsDay(date);
     }
 
     public static bool IsSwedishMidsummer(DateTime date)
     {
+        // Första lördag mellan Juni 19 och Juni 26
         return date.Month == 6 && date.Day >= 19 && date.Day <= 26 && date.DayOfWeek == DayOfWeek.Saturday;
+    }
+
+    public static bool IsAllSaintsDay(DateTime date)
+    {
+        //Första lördag mellan Okt 31 och Nov 6
+        return date.DayOfWeek == DayOfWeek.Saturday && (date.Month == 10 && date.Day == 31 || date.Month == 11 && date.Day <= 6);
     }
 
     public static bool IsFixedDateHoliday(DateTime date)
