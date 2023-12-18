@@ -210,7 +210,7 @@ public class TollCalculator_Tests
     }
 
     [Fact]
-    public void GetTotalTollFeeForDates_Car_ShouldChargeAgainIfMoreThanOneHourPassed()
+    public void GetTotalTollFeeForDates_Car_ShouldBeChargedAgainIfMoreThanOneHourPassed()
     {
         Vehicle vehicle = new(VehicleType.Car);
 
@@ -223,6 +223,22 @@ public class TollCalculator_Tests
         var result = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
         var equal = expected == result;
         Assert.True(equal, $"Expected result to equal {expected}, the sum of prices for passage at {string.Join(" and ", passageTimes)}.");
+    }
+    
+    [Fact]
+    public void GetTotalTollFeeForDates_Car_ShouldBeChargedIf_PreviousPassingWasWithinAnHour_But_WasNotCharged()
+    {
+        Vehicle vehicle = new(VehicleType.Car);
+
+        DateTime[] passageTimes = [
+            new(2023,12,15,5,29,0),
+            new(2023,12,15,6,19,0),
+        ];
+
+        var expected = 8;
+        var result = tollCalculator.GetTotalTollFeeForDates(vehicle, passageTimes);
+        var equal = expected == result;
+        Assert.True(equal, $"Expected result to equal {expected}, got {result}");
     }
 
     [Fact]
