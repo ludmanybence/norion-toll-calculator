@@ -46,14 +46,12 @@ file class TestDates
 
 public class HolidayCalculator_Tests
 {
-    private readonly HolidayCalculator holidayCalculator = new();
-
     [Fact]
     public void IsFixedDateHoliday_ShouldReturn_True_FixedDateHolidays()
     {
         foreach (var day in TestDates.FixedHolidays)
         {
-            Assert.True(holidayCalculator.IsFixedDateHoliday(day.Date), $"Expected {day.Date} to be a holiday: {day.Name}");
+            Assert.True(HolidayCalculator.IsFixedDateHoliday(day.Date), $"Expected {day.Date} to be a holiday: {day.Name}");
         }
     }
 
@@ -62,7 +60,7 @@ public class HolidayCalculator_Tests
     {
         foreach (var day in TestDates.NonHolidays)
         {
-            Assert.False(holidayCalculator.IsFixedDateHoliday(day.Date), $"Expected {day.Date} not to be a holiday: {day.Name}");
+            Assert.False(HolidayCalculator.IsFixedDateHoliday(day.Date), $"Expected {day.Date} not to be a holiday: {day.Name}");
         }
     }
 
@@ -73,7 +71,7 @@ public class HolidayCalculator_Tests
 
         foreach (var day in dates)
         {
-            Assert.False(holidayCalculator.IsFixedDateHoliday(day.Date), $"Expected {day.Date} not to be a fixed date holiday: {day.Name}");
+            Assert.False(HolidayCalculator.IsFixedDateHoliday(day.Date), $"Expected {day.Date} not to be a fixed date holiday: {day.Name}");
         }
     }
 
@@ -82,7 +80,7 @@ public class HolidayCalculator_Tests
     {
         foreach (var day in TestDates.MidsommarDays)
         {
-            Assert.True(holidayCalculator.IsSwedishMidsummer(day.Date), $"Expected {day.Date} to be a holiday: {day.Name}");
+            Assert.True(HolidayCalculator.IsSwedishMidsummer(day.Date), $"Expected {day.Date} to be a holiday: {day.Name}");
         }
     }
 
@@ -91,7 +89,7 @@ public class HolidayCalculator_Tests
     {
         foreach (var day in TestDates.NonHolidays)
         {
-            Assert.False(holidayCalculator.IsSwedishMidsummer(day.Date), $"Expected {day.Date} not to be Swedish Midsummer: {day.Name}");
+            Assert.False(HolidayCalculator.IsSwedishMidsummer(day.Date), $"Expected {day.Date} not to be Swedish Midsummer: {day.Name}");
         }
     }
 
@@ -102,7 +100,7 @@ public class HolidayCalculator_Tests
 
         foreach (var day in dates)
         {
-            Assert.False(holidayCalculator.IsSwedishMidsummer(day.Date), $"Expected {day.Date} not to be Swedish Midsummer: {day.Name}");
+            Assert.False(HolidayCalculator.IsSwedishMidsummer(day.Date), $"Expected {day.Date} not to be Swedish Midsummer: {day.Name}");
         }
     }
 
@@ -111,7 +109,7 @@ public class HolidayCalculator_Tests
     {
         foreach (var day in TestDates.EasterSundays)
         {
-            Assert.True(holidayCalculator.IsEasterRelatedHoliday(day.Date), $"Expected {day.Date} to be an easter related holiday: {day.Name}");
+            Assert.True(HolidayCalculator.IsEasterRelatedHoliday(day.Date), $"Expected {day.Date} to be an easter related holiday: {day.Name}");
         }
     }
 
@@ -120,7 +118,7 @@ public class HolidayCalculator_Tests
     {
         foreach (var day in TestDates.EasterRelatedHolidays)
         {
-            Assert.True(holidayCalculator.IsEasterRelatedHoliday(day.Date), $"Expected {day.Date} not to be an easter related holiday: {day.Name}");
+            Assert.True(HolidayCalculator.IsEasterRelatedHoliday(day.Date), $"Expected {day.Date} not to be an easter related holiday: {day.Name}");
         }
     }
 
@@ -131,7 +129,7 @@ public class HolidayCalculator_Tests
 
         foreach (var day in dates)
         {
-            Assert.False(holidayCalculator.IsEasterRelatedHoliday(day.Date), $"Expected {day.Date} not to be an easter related holiday: {day.Name}");
+            Assert.False(HolidayCalculator.IsEasterRelatedHoliday(day.Date), $"Expected {day.Date} not to be an easter related holiday: {day.Name}");
         }
     }
 
@@ -140,7 +138,7 @@ public class HolidayCalculator_Tests
     {
         foreach (var day in TestDates.NonHolidays)
         {
-            Assert.False(holidayCalculator.IsEasterRelatedHoliday(day.Date), $"Expected {day.Date} not to be an easter related holiday: {day.Name}");
+            Assert.False(HolidayCalculator.IsEasterRelatedHoliday(day.Date), $"Expected {day.Date} not to be an easter related holiday: {day.Name}");
         }
     }
 
@@ -151,7 +149,7 @@ public class HolidayCalculator_Tests
 
         foreach (var day in dates)
         {
-            Assert.True(holidayCalculator.IsHoliday(day.Date), $"Expected {day.Date} to be a holiday: {day.Name}");
+            Assert.True(HolidayCalculator.IsHoliday(day.Date), $"Expected {day.Date} to be a holiday: {day.Name}");
         }
     }
 
@@ -160,7 +158,7 @@ public class HolidayCalculator_Tests
     {
         foreach (var day in TestDates.NonHolidays)
         {
-            Assert.False(holidayCalculator.IsHoliday(day.Date), $"Expected {day.Date} not to be a holiday: {day.Name}");
+            Assert.False(HolidayCalculator.IsHoliday(day.Date), $"Expected {day.Date} not to be a holiday: {day.Name}");
         }
     }
 }

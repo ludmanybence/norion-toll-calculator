@@ -2,22 +2,22 @@ namespace TollFeeCalculator;
 
 file record Holiday(string Name, DateTime Date);
 
-public class HolidayCalculator
+public static class HolidayCalculator
 {
-    public bool IsHoliday(DateTime date)
+    public static bool IsHoliday(DateTime date)
     {
+        //Normalisera icke-datum värden
+        date = new(date.Year, date.Month, date.Day);
         return IsFixedDateHoliday(date) || IsSwedishMidsummer(date) || IsEasterRelatedHoliday(date);
     }
 
-    public bool IsSwedishMidsummer(DateTime date)
+    public static bool IsSwedishMidsummer(DateTime date)
     {
         return date.Month == 6 && date.Day >= 19 && date.Day <= 26 && date.DayOfWeek == DayOfWeek.Saturday;
     }
 
-    public bool IsFixedDateHoliday(DateTime date)
+    public static bool IsFixedDateHoliday(DateTime date)
     {
-        date = new(date.Year, date.Month, date.Day);
-
         var christmas = new DateTime(date.Year, 12, 25);
 
         Holiday[] fixedDayHolidays = [
@@ -34,7 +34,7 @@ public class HolidayCalculator
         return fixedDayHolidays.Any(x => date == x.Date);
     }
 
-    public bool IsEasterRelatedHoliday(DateTime date)
+    public static bool IsEasterRelatedHoliday(DateTime date)
     {
         var easter = CalculateEaster(date.Year);
 
@@ -49,7 +49,7 @@ public class HolidayCalculator
         return easterHolidays.Any(x => date == x.Date);
     }
 
-    private DateTime CalculateEaster(int year)
+    private static DateTime CalculateEaster(int year)
     {
         var a = year % 19;
         var b = year / 100;
