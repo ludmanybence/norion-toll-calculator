@@ -75,7 +75,7 @@ file class TestTables
 
 public class TollCalculator_Tests
 {
-    private readonly TollCalculator tollCalculator = new();
+    private readonly TollCalculator tollCalculator = new(vehicleEvaluator: new VehicleEvaluator(), dateEvaluator: new DateEvaluator(), priceTable: TimeTable.PriceTable);
 
     [Fact]
     public void GetTollFeeForTime_Car_Weekdays()
@@ -200,8 +200,8 @@ public class TollCalculator_Tests
             var equal = expected == result;
             Assert.True(equal, $"For time {time.AddDays(-1)} expected price {expected}, got {result}");
         }
-    }  
-    
+    }
+
     [Fact]
     public void GetTollFeeForTime_Motorbike_DuringJuly()
     {
