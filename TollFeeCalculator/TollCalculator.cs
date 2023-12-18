@@ -12,6 +12,8 @@ public class TollCalculator
         VehicleType.Military
     ];
 
+    private readonly int dailyCap = 60;
+
     /**
      * Calculate the total toll fee for one day
      *
@@ -19,32 +21,26 @@ public class TollCalculator
      * @param dates   - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
-
     public int GetTotalTollFeeForDates(Vehicle vehicle, DateTime[] dates)
     {
-        DateTime intervalStart = dates[0];
+        if (IsTollFreeVehicle(vehicle)) return 0;
+
+        DateTime intervalStart = new(dates[0].Year, dates[0].Month, dates[0].Day, 0, 0, 0);
+        int previousPayment = 0;
         int totalFee = 0;
+
         foreach (DateTime date in dates)
         {
-            int nextFee = GetTollFeeForTime(date, vehicle);
-            int tempFee = GetTollFeeForTime(intervalStart, vehicle);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies / 1000 / 60;
-
-            if (minutes <= 60)
+            if (date >= intervalStart.AddHours(1) || previousPayment == 0)
             {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
-            }
-            else
-            {
-                totalFee += nextFee;
+                var fee = GetTollFeeForTime(date, vehicle);
+                intervalStart = date;
+                previousPayment = fee;
+                totalFee+=fee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+
+        return Math.Min(dailyCap, totalFee);
     }
 
     public int GetTollFeeForTime(DateTime date, Vehicle vehicle)
@@ -56,7 +52,7 @@ public class TollCalculator
 
         var price = 0;
 
-        foreach (var item in TimeTable.GetPriceTable())
+        foreach (var item in TimeTable.PriceTable)
         {
             DateTime intervalEnd = new(today.Year, today.Month, today.Day, item.Interval.End.Hour, item.Interval.End.Minute, 0);
             DateTime intervalStart = new(today.Year, today.Month, today.Day, item.Interval.Start.Hour, item.Interval.Start.Minute, 0);
