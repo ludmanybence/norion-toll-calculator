@@ -106,7 +106,7 @@ public class TollCalculator_Tests
             var expected = 0;
             var result = tollCalculator.GetTollFeeForTime(time.AddDays(-1), vehicle);
             var equal = expected == result;
-            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
+            Assert.True(equal, $"For time {time.AddDays(-1)} expected price {expected}, got {result}");
         }
     }
 
@@ -130,7 +130,7 @@ public class TollCalculator_Tests
 
         foreach (var item in TestTables.RegularRates())
         {
-            var expected = item.ExpectedPrice;
+            var expected = 0;
             var result = tollCalculator.GetTollFeeForTime(item.Time, vehicle);
             var equal = expected == result;
             Assert.True(equal, $"For time {item.Time} expected price {expected}, got {result}");
@@ -175,7 +175,7 @@ public class TollCalculator_Tests
             var expected = 0;
             var result = tollCalculator.GetTollFeeForTime(time.AddDays(-1), vehicle);
             var equal = expected == result;
-            Assert.True(equal, $"For time {time} expected price {expected}, got {result}");
+            Assert.True(equal, $"For time {time.AddDays(-1)} expected price {expected}, got {result}");
         }
     }
 
