@@ -14,7 +14,9 @@ const VehicleSelection = ({ selectedVehicle, setSelectedVehicle }: Props) => {
   return (
     <select value={selectedVehicle} onChange={onSelectionChange}>
       {vehicleTypes.map((type) => (
-        <option value={type}>{type}</option>
+        <option key={type} value={type}>
+          {type}
+        </option>
       ))}
     </select>
   );

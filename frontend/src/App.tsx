@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./index.css";
 import VehicleSelection from "./components/vehicle-selection";
 import { VehicleType } from "./types/vehicle-type";
+import PaymentResult from "./components/payment-result";
 
 function App() {
   const [vehicleType] = useState();
@@ -32,9 +33,9 @@ function App() {
         selectedVehicle={selectedVehicle}
         setSelectedVehicle={setSelectedVehicle}
       ></VehicleSelection>
-      {resultingPrice}
+      {!!resultingPrice && <PaymentResult fee={resultingPrice} />}
       <button
-        className="bg-blue-500 hover:bg-blue-400 duration:50 transition p-5 rounded text-white"
+        className="bg-blue-500 hover:bg-blue-400 duration:50 transition p-5 rounded text-white mt-5"
         onClick={onGetTotalButtonClick}
       >
         Get total
