@@ -9,25 +9,33 @@ import PassageForm from "./components/passage-form";
 function App() {
   const [passages, setPassages] = useState<Date[]>([]);
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleType>("Car");
-
   const [addingPassage, setAddingPassage] = useState<boolean>(false);
+  const [resultingPrice, setResultingPrice] = useState();
 
   const addPassage = (passage: Date) => {
     setPassages((passages) => [...passages, passage]);
   };
 
+  const hasResultingPrice = resultingPrice !== undefined;
+
   useEffect(() => {
-    setPassages([]);
+    resetState();
   }, [selectedVehicle]);
 
-  const [resultingPrice, setResultingPrice] = useState();
+  const resetState = () => {
+    setPassages([]);
+    setResultingPrice(undefined);
+  };
 
   const onGetTotalButtonClick = () => {
     const url = import.meta.env.VITE_API_URL;
     fetch(`${url}/toll`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({vehicleType:selectedVehicle, passages:passages}),
+      body: JSON.stringify({
+        vehicleType: selectedVehicle,
+        passages: passages,
+      }),
     })
       .then((response) => response.json())
       .then((data) => setResultingPrice(data.price));
@@ -62,13 +70,23 @@ function App() {
             >
               + New passage
             </button>
-            {resultingPrice!==undefined && <PaymentResult fee={resultingPrice} />}
+            {hasResultingPrice && <PaymentResult fee={resultingPrice} />}
             <button
-              className="bg-blue-500 hover:bg-blue-400 duration:50 transition p-5 rounded text-white mt-5"
+              className="bg-blue-500 hover:bg-blue-400 duration:50 transition p-5 rounded text-white mt-5 disabled:bg-slate-200"
+              disabled={passages.length == 0}
               onClick={onGetTotalButtonClick}
             >
-              Get total
+              {hasResultingPrice ? "Recalculate total" : "Get total"}
             </button>
+
+            {hasResultingPrice && passages.length > 0 && (
+              <button
+                className="bg-slate-700 hover:bg-slate-500 duration:50 transition p-5 rounded text-white mt-5"
+                onClick={resetState}
+              >
+                Reset
+              </button>
+            )}
           </>
         )}
       </div>
