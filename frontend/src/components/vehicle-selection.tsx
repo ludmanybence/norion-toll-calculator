@@ -12,13 +12,23 @@ const VehicleSelection = ({ selectedVehicle, setSelectedVehicle }: Props) => {
   };
 
   return (
-    <select value={selectedVehicle} onChange={onSelectionChange}>
-      {vehicleTypes.map((type) => (
-        <option key={type} value={type}>
-          {type}
-        </option>
-      ))}
-    </select>
+    <div className="flex flex-col">
+      <label htmlFor="vehicle-select" className="text-left">
+        Select vehicle type:
+      </label>
+      <select
+        id="vehicle-select"
+        value={selectedVehicle}
+        onChange={onSelectionChange}
+        className="py-5 px-2 border-blue-400 rounded border-4 outline-transparent"
+      >
+        {vehicleTypes.map((type) => (
+          <option key={type} value={type}>
+            {type}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 
